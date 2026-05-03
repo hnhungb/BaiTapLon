@@ -2,8 +2,11 @@ import Factory.ItemFactory;
 import model.item.*;
 import model.auction.*;
 import model.user.*;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+
 public class AuctionTest {
 
     @Test
