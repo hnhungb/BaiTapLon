@@ -25,7 +25,6 @@ public class Auction {
         this.observers = new ArrayList<>();
     }
 
-    // ================= OBSERVER =================
     public void addObserver(BidObserver observer) {
         observers.add(observer);
     }
@@ -36,7 +35,6 @@ public class Auction {
         }
     }
 
-    // ================= PLACE BID =================
     public boolean placeBid(Bid bid) throws InvalidBidException {
         lock.lock();
         try {
@@ -55,7 +53,6 @@ public class Auction {
         }
     }
 
-    // ================= CLOSE AUCTION =================
     public void closeAuction() throws AuctionClosedException {
         lock.lock();
         try {
@@ -75,7 +72,6 @@ public class Auction {
         }
     }
 
-    // ================= GET WINNER =================
     public Bid getWinner() {
         if (bids.isEmpty()) return null;
 
@@ -83,7 +79,6 @@ public class Auction {
         return Collections.max(bids, Comparator.comparingDouble(Bid::getAmount));
     }
 
-    // ================= GETTERS =================
     public double getCurrentPrice() {
         return currentPrice;
     }
