@@ -1,53 +1,23 @@
-package Factory;
+package factory;
 
-import model.user.Seller;
+import model.item.*;
 
 public class ItemFactory {
 
-    public static Item createItem(
-            ItemType type,
-            String id,
-            String name,
-            String description,
-            double startPrice,
-            Seller seller
-    ) {
+    // Tạo item từ string type (dùng khi nhận từ bên ngoài (client) qua network)
+    public static Item createItem(String type, String id, String name,
+                                  String description, double startPrice) {
+        return switch (type.toUpperCase()) {
+            case "ELECTRONICS" -> new Electronics(id, name, description, startPrice);
+            case "ART"         -> new Art(id, name, description, startPrice);
+            case "VEHICLE"     -> new Vehicle(id, name, description, startPrice);
+            default -> throw new IllegalArgumentException("Loại sản phẩm không hợp lệ: " + type);
+        };
+    }
 
-        if (type == ItemType.ELECTRONICS) {
-
-            return new Electronics(
-                    id,
-                    name,
-                    description,
-                    startPrice,
-                    seller
-            );
-
-        } else if (type == ItemType.ART) {
-
-            return new Art(
-                    id,
-                    name,
-                    description,
-                    startPrice,
-                    seller
-            );
-
-        } else if (type == ItemType.VEHICLE) {
-
-            return new Vehicle(
-                    id,
-                    name,
-                    description,
-                    startPrice,
-                    seller
-            );
-
-        } else {
-
-            throw new IllegalArgumentException(
-                    "Invalid item type"
-            );
-        }
+    // Tạo item từ enum (dùng khi gọi trong code Java an toàn hơn String, tránh lỗi gõ sai chữ)
+    public static Item createItem(ItemType type, String id, String name,
+                                  String description, double startPrice) {
+        return createItem(type.name(), id, name, description, startPrice);
     }
 }
