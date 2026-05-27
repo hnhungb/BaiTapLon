@@ -1,35 +1,98 @@
 import Factory.ItemFactory;
-import model.item.*;
-import model.auction.*;
-import model.user.*;
-
+import exception.InvalidBidException;
+import model.auction.Auction;
+import model.auction.Bid;
+import model.item.Item;
+import model.item.ItemType;
+import model.user.Bidder;
+import model.user.Seller;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AuctionTest {
 
     @Test
     void testValidBid() throws Exception {
-        Item item = ItemFactory.createItem("ELECTRONICS", "I1", "Phone", 100);
-        Auction auction = new Auction(item);
 
-        Bidder b = new Bidder("B1", "A");
+        Seller seller =
+                new Seller(
+                        "S1",
+                        "David",
+                        "123456"
+                );
 
-        assertTrue(auction.placeBid(new Bid(b, 150)));
+        Item item =
+                ItemFactory.createItem(
+                        ItemType.ELECTRONICS,
+                        "I1",
+                        "Phone",
+                        "iPhone 17",
+                        100,
+                        seller
+                );
+
+        Auction auction =
+                new Auction(item);
+
+        Bidder bidder =
+                new Bidder(
+                        "B1",
+                        "Alice",
+                        "123456"
+                );
+
+        assertTrue(
+                auction.placeBid(
+                        new Bid(
+                                bidder,
+                                150
+                        )
+                )
+        );
     }
 
     @Test
     void testInvalidBid() {
-        Item item;
-        item = ItemFactory.createItem("ELECTRONICS","I1", "Phone", 100);
-        Auction auction = new Auction(item);
 
-        Bidder b = new Bidder("B1", "A");
+        Seller seller =
+                new Seller(
+                        "S1",
+                        "David",
+                        "123456"
+                );
 
-        assertThrows(Exception.class, () -> {
-            auction.placeBid(new Bid(b, 50));
-        });
+        Item item =
+                ItemFactory.createItem(
+                        ItemType.ELECTRONICS,
+                        "I1",
+                        "Phone",
+                        "iPhone 17",
+                        100,
+                        seller
+                );
+
+        Auction auction =
+                new Auction(item);
+
+        Bidder bidder =
+                new Bidder(
+                        "B1",
+                        "Alice",
+                        "123456"
+                );
+
+        assertThrows(
+                InvalidBidException.class,
+                () -> {
+                    auction.placeBid(
+                            new Bid(
+                                    bidder,
+                                    50
+                            )
+                    );
+                }
+        );
     }
 }
-

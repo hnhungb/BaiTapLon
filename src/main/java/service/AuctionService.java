@@ -1,9 +1,5 @@
 package service;
 
-import exception.*;
-import model.auction.*;
-import model.item.*;
-
 import java.util.HashMap;
 import java.util.Map;
 

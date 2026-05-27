@@ -2,7 +2,6 @@ package model.auction;
 import model.item.*;
 
 import observer.BidObserver;
-import exception.*;
 
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
@@ -35,20 +34,32 @@ public class Auction {
         }
     }
 
-    public boolean placeBid(Bid bid) throws InvalidBidException {
+    public boolean placeBid(Bid bid)
+            throws InvalidBidException, AuctionClosedException {
         lock.lock();
         try {
+            if (isClosed) {
+                throw new AuctionClosedException(
+                        "Auction is closed!"
+                );
+            }
+            // giá bid phải cao hơn current price
             if (bid.getAmount() <= currentPrice) {
-                throw new InvalidBidException("Bid must be higher!");
+                throw new InvalidBidException(
+                        "Bid must be higher!"
+                );
             }
 
             currentPrice = bid.getAmount();
+
             bids.add(bid);
+
             notifyObservers(bid);
 
             return true;
 
         } finally {
+
             lock.unlock();
         }
     }
@@ -61,7 +72,7 @@ public class Auction {
 
             Bid winner = getWinner();
             if (winner != null) {
-                System.out.println("Winner: " + winner.getBidder().getName()
+                System.out.println("Winner: " + winner.getBidder().getUsername()
                         + " with price " + winner.getAmount());
             } else {
                 System.out.println("No bids placed.");

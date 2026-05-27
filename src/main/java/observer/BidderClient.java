@@ -1,7 +1,5 @@
 package observer;
 
-import model.auction.*;
-
 public class BidderClient implements BidObserver {
 
     private String name;

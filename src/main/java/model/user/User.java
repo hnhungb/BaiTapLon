@@ -10,14 +10,16 @@ public abstract class User {
         this.username = username;
         this.password = password;
     }
-
     public abstract String getRole();
-
     public String getId() {
         return id;
     }
-    public String getUsername() { return username; }
-    public String getPassword() { return password; }
+    public String getUsername() {
+        return username;
+    }
+    public String getPassword() {
+        return password;
+    }
     public void setPassword(String password) {
         this.password = password;
     }
