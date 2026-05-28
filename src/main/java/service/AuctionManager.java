@@ -1,5 +1,6 @@
 package service;
 
+import model.auction.*;;
 import java.util.ArrayList;
 import java.util.List;
 

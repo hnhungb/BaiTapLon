@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="client.LoginController"
+      spacing="0" style="-fx-background-color:#1a1a2e;">
+
+    <!-- Header -->
+    <VBox alignment="CENTER" style="-fx-background-color:#16213e; -fx-padding:30;">
+        <Text text="🏷 Online Auction System"
+              style="-fx-font-size:22; -fx-fill:#e94560; -fx-font-weight:bold;"/>
+        <Text text="Buy and Sell at the Best Price"
+              style="-fx-font-size:12; -fx-fill:#a8a8b3;"/>
+    </VBox>
+
+    <!-- Tab pane for login / register -->
+    <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE"
+             style="-fx-background-color:#1a1a2e; -fx-padding:20;">
+
+        <!-- LOGIN TAB -->
+        <Tab text="Login">
+            <VBox spacing="14" style="-fx-padding:20 40 20 40;">
+                <Label text="Username" style="-fx-text-fill:#e0e0e0;"/>
+                <TextField fx:id="usernameField" promptText="Enter username"
+                           style="-fx-background-color:#16213e; -fx-text-fill:white; -fx-border-color:#e94560; -fx-border-radius:4; -fx-background-radius:4;"/>
+                <Label text="Password" style="-fx-text-fill:#e0e0e0;"/>
+                <PasswordField fx:id="passwordField" promptText="Enter password"
+                               style="-fx-background-color:#16213e; -fx-text-fill:white; -fx-border-color:#e94560; -fx-border-radius:4; -fx-background-radius:4;"/>
+                <Button text="Login" onAction="#handleLogin" maxWidth="Infinity"
+                        style="-fx-background-color:#e94560; -fx-text-fill:white; -fx-font-size:14; -fx-font-weight:bold; -fx-padding:10; -fx-background-radius:4;"/>
+                <Label fx:id="statusLabel" wrapText="true" style="-fx-text-fill:red;"/>
+            </VBox>
+        </Tab>
+
+        <!-- REGISTER TAB -->
+        <Tab text="Register">
+            <VBox spacing="14" style="-fx-padding:20 40 20 40;">
+                <Label text="Username" style="-fx-text-fill:#e0e0e0;"/>
+                <TextField fx:id="usernamefield" promptText="Choose username"
+                           style="-fx-background-color:#16213e; -fx-text-fill:white; -fx-border-color:#0f3460; -fx-border-radius:4; -fx-background-radius:4;"/>
+                <Label text="Password" style="-fx-text-fill:#e0e0e0;"/>
+                <PasswordField fx:id="passwordfield" promptText="Choose password"
+                               style="-fx-background-color:#16213e; -fx-text-fill:white; -fx-border-color:#0f3460; -fx-border-radius:4; -fx-background-radius:4;"/>
+                <Label text="Role" style="-fx-text-fill:#e0e0e0;"/>
+                <ComboBox fx:id="roleCombo" maxWidth="Infinity"
+                          style="-fx-background-color:#16213e;"/>
+                <Button text="Create Account" onAction="#handleRegister" maxWidth="Infinity"
+                        style="-fx-background-color:#0f3460; -fx-text-fill:white; -fx-font-size:14; -fx-font-weight:bold; -fx-padding:10; -fx-background-radius:4;"/>
+                <Label fx:id="statuslabel" wrapText="true" style="-fx-text-fill:red;"/>
+            </VBox>
+        </Tab>
+    </TabPane>
+</VBox>
