@@ -9,7 +9,7 @@ public class AutoBidConfig {
 
     private Bidder        bidder;
     private double        maxBid;      // giá cao nhất mà người đó có thể trả
-    private double        step;        // mỗi lần ra giá tăng bao nhiêu
+    private double        step;        // bước nhảy: mỗi lần ra giá tăng bao nhiêu
     private LocalDateTime registeredAt;
 
     public AutoBidConfig(Bidder bidder, double maxBid, double step) {
