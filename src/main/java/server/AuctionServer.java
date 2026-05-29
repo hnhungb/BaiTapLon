@@ -1,0 +1,53 @@
+package server;
+
+import model.user.*;
+import service.*;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+// Server chính- chờ client kết nối + tạo thread xử lý từng client
+// Chạy: java -cp ... server.AuctionServer
+public class AuctionServer {
+
+    public static void main(String[] args) throws IOException {
+        UserService    userService    = new UserService();   //service qly user
+        AuctionService auctionService = new AuctionService(userService);   //qly auction
+
+        themDataMau(userService, auctionService); //data mẫu để test
+        System.out.println("Server chạy tại port " + Protocol.PORT );
+
+        ServerSocket serverSocket = new ServerSocket(Protocol.PORT);
+
+        while (true) {      //cho server chạy liên tục
+            Socket clientSocket = serverSocket.accept();     //chờ cho client kết nối
+            System.out.println("Client kết nối: " + clientSocket.getRemoteSocketAddress());
+
+            // Mỗi client chạy trên 1 thread riêng
+            ClientHandler handler = new ClientHandler(clientSocket, auctionService, userService);
+            Thread thread = new Thread(handler);
+            thread.start();
+        }
+    }
+
+    private static void themDataMau(UserService us, AuctionService as) {
+        // Tạo users mẫu
+        us.register(new Admin("admin1",  "admin",   "admin123",  "admin@auction.com"));
+        us.register(new Seller("s1",     "alice",   "123456",    "alice@gmail.com"));
+        us.register(new Bidder("b1",     "bob",     "123456",    "bob@gmail.com"));
+        us.register(new Bidder("b2",     "charlie", "123456",    "charlie@gmail.com"));
+
+        // Tạo phiên đấu giá mẫu (60 phút)
+        as.createAuction("A001", "alice", "ELECTRONICS", "iPhone 15 Pro",
+                "Mới 100%, fullbox", 500.0, 60);
+
+        as.createAuction("A002", "alice", "ART", "Tranh Sơn Dầu Hồ Tây",
+                "Sơn dầu trên canvas 60x80cm", 200.0, 90);
+
+        as.createAuction("A003", "alice", "VEHICLE", "Honda Wave Alpha 2022",
+                "Còn mới, đi 5000km", 8000.0, 120);
+
+        System.out.println("Đã tạo data mẫu: 4 users, 3 phiên đấu giá");
+    }
+}
