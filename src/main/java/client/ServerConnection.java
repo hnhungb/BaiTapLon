@@ -1,87 +1,70 @@
 package client;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import server.Protocol;
+import com.google.gson.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.function.Consumer;
 
-/**
- * Manages the client-side TCP connection to AuctionServer.
- * Synchronous send/receive for requests; asynchronous listener for push updates.
- */
+// Quản lý kết nối TCP đến server
+// Gửi lệnh JSON, nhận kết quả JSON
 public class ServerConnection {
 
     private static final String HOST = "localhost";
 
-    private Socket         socket;
+    private Socket       socket;
     private BufferedReader reader;
-    private PrintWriter    writer;
-    private final ObjectMapper mapper = new ObjectMapper();
+    private PrintWriter   writer;
+    private Gson         gson = new Gson();
 
-    private Consumer<JsonNode> pushListener;
-
-    public void connect() throws IOException {
-        socket = new Socket(HOST, Protocol.PORT);
-        reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
-
-        // Background thread listens for push messages from server
-        Thread listenerThread = new Thread(this::listenForPush, "push-listener");
-        listenerThread.setDaemon(true);
-        listenerThread.start();
-    }
-
-    /** Send request and block for one-line response (for request-response calls) */
-    public synchronized JsonNode send(String action, ObjectNode payload) {
+    // Kết nối đến server
+    public boolean connect() {
         try {
-            ObjectNode req = mapper.createObjectNode();
-            req.put("action", action);
-            if (payload != null) req.set("payload", payload);
-            writer.println(mapper.writeValueAsString(req));
-            // The response will arrive on the listener thread;
-            // for simplicity we read it here synchronously.
-            // PUSH messages are handled by the listener loop.
-            String line = reader.readLine();
-            if (line == null) return errorNode("Connection closed");
-            return mapper.readTree(line);
+            socket = new Socket(HOST, server.Protocol.PORT);
+            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            writer = new PrintWriter(socket.getOutputStream(), true);
+            return true;
         } catch (IOException e) {
-            return errorNode(e.getMessage());
+            System.err.println("Không thể kết nối server: " + e.getMessage());
+            return false;
         }
     }
 
-    /** Register listener for PUSH_BID_UPDATE messages */
-    public void setPushListener(Consumer<JsonNode> listener) {
-        this.pushListener = listener;
+    // Gửi 1 lệnh và đọc 1 dòng kết quả
+    public JsonObject send(JsonObject request) {
+        try {
+            writer.println(gson.toJson(request));
+            String line = reader.readLine();
+            if (line == null) return errorJson("Mất kết nối server");
+            return JsonParser.parseString(line).getAsJsonObject();
+        } catch (IOException e) {
+            return errorJson("Lỗi kết nối: " + e.getMessage());
+        }
     }
 
-    private void listenForPush() {
-        // Note: because send() also reads from reader, this listener loop
-        // only fires for unsolicited pushes. For a production system you'd
-        // use a full async message queue; this is acceptable for the assignment.
-        // The push is handled by the GET_AUCTION response which registers the observer.
-        // In practice the observer calls pushBidUpdate which writes to the socket.
+    // Đọc 1 dòng từ server (dùng để nhận push update)
+    public String readLine() throws IOException {
+        return reader.readLine();
     }
 
-    public ObjectMapper getMapper() { return mapper; }
-
-    public ObjectNode payload() { return mapper.createObjectNode(); }
-
-    private JsonNode errorNode(String msg) {
-        ObjectNode n = mapper.createObjectNode();
-        n.put("success", false);
-        n.put("error", msg);
-        return n;
+    // Tạo request JSON đơn giản
+    public static JsonObject req(String action) {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("action", action);
+        return obj;
     }
 
     public boolean isConnected() {
-        return socket != null && !socket.isClosed();
+        return socket != null && !socket.isClosed() && socket.isConnected();
     }
 
     public void disconnect() {
         try { if (socket != null) socket.close(); } catch (IOException ignored) {}
+    }
+
+    private JsonObject errorJson(String msg) {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("ok", false);
+        obj.addProperty("error", msg);
+        return obj;
     }
 }

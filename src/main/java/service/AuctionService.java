@@ -1,7 +1,7 @@
 package service;
 
 import exception.*;
-import factory.ItemFactory;
+import Factory.ItemFactory;
 import model.auction.*;
 import model.item.Item;
 import model.user.*;
