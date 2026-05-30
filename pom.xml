@@ -16,6 +16,7 @@
     </properties>
 
     <dependencies>
+        <!-- JavaFX -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -24,6 +25,11 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
+            <version>21.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-charts</artifactId>
             <version>21.0.2</version>
         </dependency>
 
@@ -41,14 +47,36 @@
             <version>5.10.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.14.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.12.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
+        <!-- Source chính -->
         <sourceDirectory>src</sourceDirectory>
-        <testSourceDirectory>src/Test</testSourceDirectory>
+        <!-- Source test đúng chuẩn Maven -->
+        <testSourceDirectory>src/test/java</testSourceDirectory>
+
         <resources>
             <resource><directory>src/main/resources</directory></resource>
         </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.openjfx</groupId>
