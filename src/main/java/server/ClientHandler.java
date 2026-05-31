@@ -60,9 +60,10 @@ public class ClientHandler implements Runnable, BidObserver {
     @Override
     public synchronized void update(Bid bid) {
         JsonObject push = new JsonObject();
-        push.addProperty("action",   Protocol.BID_UPDATE);
-        push.addProperty("bidder",   bid.getBidder().getUsername());
-        push.addProperty("amount",   bid.getAmount());
+        push.addProperty("action", Protocol.BID_UPDATE);
+        push.addProperty("auctionId", watchingAuctionId); // THÊM DÒNG NÀY
+        push.addProperty("bidder", bid.getBidder().getUsername());
+        push.addProperty("amount", bid.getAmount());
         push.addProperty("isAuto",   bid.isAuto());
         push.addProperty("time",     bid.getTimeFormatted());
         out.println(gson.toJson(push));

@@ -250,14 +250,16 @@ public class MainController {
                 Platform.runLater(() -> {
                     String bidder = msg.get("bidder").getAsString();
                     double amount = msg.get("amount").getAsDouble();
-                    String time = msg.get("time").getAsString();
-
-                    String line = bidder + " : " + String.format("%.0f", amount)
-                            + " VNĐ (" + time + ")";
-
-                    if (listHistory != null) listHistory.getItems().add(0, line);
+                    // 1. Cập nhật giao diện chi tiết (nếu đang mở)
                     if (lblGiaHienTai != null) lblGiaHienTai.setText(String.format("%.0f VNĐ", amount));
-                    if (lblNguoiDanDau != null) lblNguoiDanDau.setText("Dẫn đầu: " + bidder);
+
+                    // 2. QUAN TRỌNG: Cập nhật giá ở TableView bên ngoài
+                    for (AuctionRow row : rows) {
+                        // Bạn cần Server gửi thêm auctionId trong gói tin BID_UPDATE để khớp chính xác
+                        // Ở đây tạm ví dụ cập nhật row nếu tên khớp hoặc load lại danh sách
+                    }
+                    // Cách nhanh nhất nhưng hơi tốn tài nguyên:
+                    loadDanhSachPhien();
                 });
             }
         });

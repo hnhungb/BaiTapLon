@@ -44,9 +44,11 @@ public class ServerConnection {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     JsonObject msg = JsonParser.parseString(line).getAsJsonObject();
-                    if (msg.has("action")) {
-                        if (listener != null) listener.onMessage(msg);
+                    // Luôn ưu tiên đẩy cho listener xử lý nếu đó là tin nhắn PUSH từ server
+                    if (msg.has("action") && listener != null) {
+                        listener.onMessage(msg);
                     } else {
+                        // Nếu là phản hồi cho lệnh vừa gửi (hỏi-đáp)
                         responses.offer(msg);
                     }
                 }
