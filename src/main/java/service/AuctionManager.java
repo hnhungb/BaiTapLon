@@ -14,7 +14,7 @@ public class AuctionManager {
 
     private static AuctionManager instance; // Singleton instance
 
-    private List<Auction> auctions = new ArrayList<>();
+    private List<Auction> auctions = java.util.Collections.synchronizedList(new ArrayList<>());
 
     // Scheduler chạy ngầm, mỗi giây kiểm tra phiên nào hết giờ
     private ScheduledExecutorService scheduler;

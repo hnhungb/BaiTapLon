@@ -136,7 +136,7 @@ public class MainController {
                 if (resp.get("ok").getAsBoolean()) {
                     hienThiPhien(resp.getAsJsonObject("data"));
                     if (tabBid != null) tabPane.getSelectionModel().select(tabBid);
-                    //batDauLangNghe(); // bắt đầu nhận push update từ server
+                    batDauLangNghe(); // bắt đầu nhận push update từ server
                 }
             });
         }).start();
@@ -240,41 +240,29 @@ public class MainController {
     }
 
     // Lắng nghe push update từ server (chạy trên background thread)
+
     private void batDauLangNghe() {
-        new Thread(() -> {
-            try {
-                while (connection.isConnected()) {
-                    String line = connection.readLine();
-                    if (line == null) break;
+        connection.setListener(msg -> {
+            if (!msg.has("action")) return;
+            String action = msg.get("action").getAsString();
 
-                    JsonObject msg = JsonParser.parseString(line).getAsJsonObject();
-                    if (!msg.has("action")) continue;
+            if (Protocol.BID_UPDATE.equals(action)) {
+                Platform.runLater(() -> {
+                    String bidder = msg.get("bidder").getAsString();
+                    double amount = msg.get("amount").getAsDouble();
+                    String time = msg.get("time").getAsString();
 
-                    if (msg.get("action").getAsString().equals(Protocol.BID_UPDATE)) {
-                        double soTienMoi = msg.get("amount").getAsDouble();
-                        String bidder    = msg.get("bidder").getAsString();
-                        String time      = msg.get("time").getAsString();
-                        boolean isAuto   = msg.get("isAuto").getAsBoolean();
+                    String line = bidder + " : " + String.format("%.0f", amount)
+                            + " VNĐ (" + time + ")";
 
-                        Platform.runLater(() -> {
-                            // Cập nhật giá và người dẫn đầu ngay lập tức
-                            if (lblGiaHienTai  != null) lblGiaHienTai.setText(String.format("%.0f VNĐ", soTienMoi));
-                            if (lblNguoiDanDau != null) lblNguoiDanDau.setText("Dẫn đầu: " + bidder);
-
-                            // Thêm vào lịch sử
-                            if (listHistory != null) {
-                                String dong = String.format("%-12s  %.0f VNĐ  %s%s",
-                                        bidder, soTienMoi, time, isAuto ? "  [auto]" : "");
-                                listHistory.getItems().add(dong);
-                            }
-                        });
-                    }
-                }
-            } catch (Exception e) {
-                // Client đã ngắt kết nối - dừng lắng nghe
+                    if (listHistory != null) listHistory.getItems().add(0, line);
+                    if (lblGiaHienTai != null) lblGiaHienTai.setText(String.format("%.0f VNĐ", amount));
+                    if (lblNguoiDanDau != null) lblNguoiDanDau.setText("Dẫn đầu: " + bidder);
+                });
             }
-        }).start();
+        });
     }
+
 
     // ── Tab 3: Đăng bán ───────────────────────────────────────────────
 

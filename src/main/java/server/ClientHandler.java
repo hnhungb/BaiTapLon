@@ -58,7 +58,7 @@ public class ClientHandler implements Runnable, BidObserver {
 
     // Nhận bid update từ Auction, đẩy xuống client
     @Override
-    public void update(Bid bid) {
+    public synchronized void update(Bid bid) {
         JsonObject push = new JsonObject();
         push.addProperty("action",   Protocol.BID_UPDATE);
         push.addProperty("bidder",   bid.getBidder().getUsername());

@@ -67,7 +67,7 @@
     <!-- PANEL ĐĂNG KÝ (ẩn mặc định) -->
     <VBox fx:id="panelRegister" alignment="CENTER" managed="false" maxWidth="360" spacing="14" style="-fx-padding:40; -fx-max-width:360; -fx-background-color:white;                  -fx-background-radius:8; -fx-effect:dropshadow(gaussian,#ccc,10,0,0,2);" visible="false">
 
-        <Text style="-fx-font-size:18; -fx-font-weight:bold;" text="🏷 Hệ thống Đấu Giá" />
+        <Text style="-fx-font-size:18; -fx-font-weight:bold;" text="Hệ thống Đấu Giá" />
         <Text style="-fx-font-size:12; -fx-fill:#888;" text="Tạo tài khoản mới" />
 
         <Label style="-fx-font-weight:bold;" text="Tên đăng nhập:" />

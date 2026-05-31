@@ -35,7 +35,7 @@
                     <TableView fx:id="table" VBox.vgrow="ALWAYS">
                         <columns>
                             <TableColumn fx:id="colTen" prefWidth="150" text="Sản phẩm" />
-                            <TableColumn fx:id="colLoai"      text="Loại"          prefWidth="100"/>
+                            <TableColumn fx:id="colLoai" prefWidth="100" text="Loại" />
                             <TableColumn fx:id="colGia" prefWidth="110" text="Giá hiện tại" />
                             <TableColumn fx:id="colTrangThai" prefWidth="90" text="Trạng thái" />
                             <TableColumn fx:id="colKetThuc" prefWidth="155" text="Kết thúc" />
@@ -96,7 +96,7 @@
                         <Label style="-fx-font-weight:bold;" text="📈 Biểu đồ giá theo thời gian" />
                         <LineChart fx:id="priceChart" VBox.vgrow="ALWAYS">
                             <xAxis><NumberAxis label="Lần đặt" fx:id="xAxisChart" /></xAxis>
-                            <yAxis><NumberAxis fx:id="yAxisChart" label="Giá (VNĐ)" /></yAxis>
+                            <yAxis><NumberAxis fx:id="yAxisChart" label="Giá (trăm nghìn đồng)" /></yAxis>
                         </LineChart>
                     </VBox>
 
