@@ -35,6 +35,7 @@
                     <TableView fx:id="table" VBox.vgrow="ALWAYS">
                         <columns>
                             <TableColumn fx:id="colTen" prefWidth="150" text="Sản phẩm" />
+                            <TableColumn fx:id="colLoai"      text="Loại"          prefWidth="100"/>
                             <TableColumn fx:id="colGia" prefWidth="110" text="Giá hiện tại" />
                             <TableColumn fx:id="colTrangThai" prefWidth="90" text="Trạng thái" />
                             <TableColumn fx:id="colKetThuc" prefWidth="155" text="Kết thúc" />

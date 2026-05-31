@@ -20,10 +20,13 @@ public class ClientApp extends Application {
 
         if (!connected) {
             System.err.println("Chạy server trước! (server.AuctionServer)");
+            // Hiển thị thông báo hoặc thoát chương trình luôn để tránh lỗi dây chuyền
+            System.exit(0);
+            return;
         }
 
         // Load màn hình đăng nhập
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml"));
         Parent root = loader.load();
 
         LoginController ctrl = loader.getController();

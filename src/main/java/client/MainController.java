@@ -74,6 +74,13 @@ public class MainController {
             cbItemType.getItems().addAll("ELECTRONICS", "ART", "VEHICLE");
             cbItemType.setValue("ELECTRONICS");
         }
+        if (tabPane != null) {
+            tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
+                if (newTab != null && newTab.getText().contains("Danh sách")) {
+                    loadDanhSachPhien(); // Tự động load lại danh sách khi người dùng click về tab này
+                }
+            });
+        }
     }
 
     public void setConnection(ServerConnection conn) { this.connection = conn; }
@@ -129,7 +136,7 @@ public class MainController {
                 if (resp.get("ok").getAsBoolean()) {
                     hienThiPhien(resp.getAsJsonObject("data"));
                     if (tabBid != null) tabPane.getSelectionModel().select(tabBid);
-                    batDauLangNghe(); // bắt đầu nhận push update từ server
+                    //batDauLangNghe(); // bắt đầu nhận push update từ server
                 }
             });
         }).start();
