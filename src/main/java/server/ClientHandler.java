@@ -15,14 +15,13 @@ import java.util.List;
 // Handler này nhận lệnh từ client, xử lý, trả về kết quả
 public class ClientHandler implements Runnable, BidObserver {
 
-    private Socket         socket;     //socket kết nối với client
+    private Socket socket;           //socket kết nối với client
     private BufferedReader in;       //đọc dlieu từ client
-    private PrintWriter    out;       //gửi dlieu về client
-    private Gson           gson;         // Gson dùng để convert Java object <-> JSON
+    private PrintWriter out;         //gửi dlieu về client
+    private Gson gson;               // Gson dùng để convert Java object <-> JSON
     private AuctionService auctionService;     //server xly auction
-    private UserService    userService;       //xly user
-    private User           loggedInUser; // user đang đăng nhập trên kết nối này
-
+    private UserService userService;           //xly user
+    private User loggedInUser;                 // user đang đăng nhập trên kết nối này
     // ID phiên đang xem (để nhận push update)
     private String watchingAuctionId;
 
@@ -57,7 +56,7 @@ public class ClientHandler implements Runnable, BidObserver {
         }
     }
 
-    // Nhận bid update từ Auction, đẩy ngay xuống client
+    // Nhận bid update từ Auction, đẩy xuống client
     @Override
     public void update(Bid bid) {
         JsonObject push = new JsonObject();
@@ -72,8 +71,8 @@ public class ClientHandler implements Runnable, BidObserver {
     // Xử lý từng lệnh nhận từ client
     private String handleRequest(String json) {
         try {
-            JsonObject req    = JsonParser.parseString(json).getAsJsonObject();
-            String     action = req.get("action").getAsString();
+            JsonObject req = JsonParser.parseString(json).getAsJsonObject();
+            String action = req.get("action").getAsString();
 
             switch (action) {
                 case Protocol.REGISTER:       return doRegister(req);
@@ -92,7 +91,7 @@ public class ClientHandler implements Runnable, BidObserver {
         }
     }
 
-    // ── Xử lý từng lệnh ────────────────────────────────────────────────
+    //Xử lý từng lệnh
 
     private String doRegister(JsonObject req) {
         String username = req.get("username").getAsString();
@@ -217,7 +216,7 @@ public class ClientHandler implements Runnable, BidObserver {
         return success(new JsonPrimitive("Đã hủy phiên"));
     }
 
-    // ── JSON helpers ───────────────────────────────────────────────────
+    // JSON helpers
 
     private JsonObject auctionToJson(Auction a) {
         JsonObject obj = new JsonObject();
