@@ -98,3 +98,5 @@ Item (abstract)
 ├── Art          - getType() = "Art"
 └── Vehicle      - getType() = "Vehicle"
 ```
+#### Link báo cáo và video
+https://drive.google.com/drive/folders/1WzJ2drAEM8qQlYY_V_eoznDEwwm8D4lW?usp=sharing
