@@ -96,6 +96,26 @@ public class Auction {
                 status = AuctionStatus.FINISHED;
                 throw new AuctionClosedException("Phiên đấu giá đã hết thời gian!");
             }
+            // Check bid null
+            if (bid == null || bid.getBidder() == null) {
+                throw new InvalidBidException("Bid không hợp lệ (null)");
+            }
+
+            //Check giá > 0
+            if (bid.getAmount() <= 0) {
+                throw new InvalidBidException("Giá bid phải > 0");
+            }
+
+            // Check seller không được bid
+            if (seller != null &&
+                    bid.getBidder().getUsername().equals(seller.getUsername())) {
+                throw new InvalidBidException("Seller không được phép tự bid");
+            }
+
+            // Check không tự bid khi đang dẫn đầu
+            if (winningBid != null &&
+                    bid.getBidder().getUsername().equals(winningBid.getBidder().getUsername())) {
+                throw new InvalidBidException("Bạn đang là người dẫn đầu");
 
             // Kiểm tra giá hợp lệ 
             if (bid.getAmount() <= currentPrice) {
@@ -141,33 +161,48 @@ public class Auction {
         autoBidList.removeIf(c -> c.getBidder().getId().equals(config.getBidder().getId()));
         autoBidList.add(config);
     }
-
-    // Sau khi có bid mới, kích hoạt auto-bid của đối thủ (nếu đủ điều kiện)
+    //Khi có bid mới, hệ thống tự động cho các auto-bidder đấu qua lại liên tục đến khi không ai đấu tiếp được nữa
     private void triggerAutoBid(Bid justPlaced) {
-        // Sắp xếp theo thời gian đăng ký - ai đăng ký trước được ưu tiên
-        autoBidList.sort((a, b) -> a.getRegisteredAt().compareTo(b.getRegisteredAt()));
-        // duyệt từng config
-        for (AutoBidConfig config : autoBidList) {
-            // Bỏ qua người vừa đặt
-            if (config.getBidder().getId().equals(justPlaced.getBidder().getId())) {
-                continue;
-            }
-            //tính giá tiếp
-            double nextPrice = currentPrice + config.getStep();
+        boolean updated;
 
-            // Nếu giá tiếp theo vẫn trong giới hạn maxBid thì auto đặt
-            if (nextPrice <= config.getMaxBid()) {
-                Bid autoBid = new Bid(config.getBidder(), nextPrice, true); //tạo lượt mới
-                // Cập nhật trạng thía phiên đấu giá
-                currentPrice = nextPrice;   //cập nhật giá hiện tại 
-                winningBid   = autoBid;     // ghi nhận lượt giá cao nhất
-                bids.add(autoBid);          // thêm lượt này vào dnah sách lịch sử đấu giá
-                applyAntiSnipe();           //Anti-snipe
-                notifyObservers(autoBid);   //notify
-                System.out.println("🤖 Auto-bid: " + config.getBidder().getUsername() + " tự đặt " + nextPrice);
-                break; // Chỉ 1 auto-bid kích hoạt mỗi lượt
+        do {
+            updated = false;
+
+            // Sắp xếp theo thời gian đăng ký (ưu tiên người đăng ký trước) quan trọng khi 2 người có cùng maxbid
+            autoBidList.sort((a, b) -> a.getRegisteredAt().compareTo(b.getRegisteredAt()));
+
+            for (AutoBidConfig config : autoBidList) {
+
+                // Bỏ qua người đang dẫn đầu, tránh trường hợp người đang thắng tự bid lại chính mình
+                if (winningBid != null &&
+                        config.getBidder().getId().equals(winningBid.getBidder().getId())) {
+                    continue;
+                }
+                //tính giá tiếp theo: giá mới = giá hiện tại + bước nhảy
+                double nextPrice = currentPrice + config.getStep();
+
+                // Nếu đủ điều kiện thì auto-bid: Chỉ bid được nếu không vượt quá maxbid của user
+                if (nextPrice <= config.getMaxBid()) {
+
+                    Bid autoBid = new Bid(config.getBidder(), nextPrice, true);
+                    //Cập nhật
+                    currentPrice = nextPrice; //giá hiện tại
+                    winningBid = autoBid;      //người dẫn đầu
+                    bids.add(autoBid);          //lịch sử đấu giá
+
+                    applyAntiSnipe();
+                    notifyObservers(autoBid);
+
+                    System.out.println("🤖 Auto-bid: " +
+                            config.getBidder().getUsername() +
+                            " đặt " + nextPrice);
+
+                    updated = true;
+                    break; // break for để quay lại while (đấu tiếp vòng mới)
+                }
             }
-        }
+
+        } while (updated);
     }
 
     // Đóng phiên đấu giá
