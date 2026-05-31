@@ -91,14 +91,14 @@
                         <ListView fx:id="listHistory" style="-fx-font-family:monospace;" VBox.vgrow="ALWAYS" />
                     </VBox>
 
-                    <!-- Bên phải: biểu đồ giá -->
-                    <VBox spacing="6" style="-fx-padding:12;">
-                        <Label style="-fx-font-weight:bold;" text="📈 Biểu đồ giá theo thời gian" />
-                        <LineChart fx:id="priceChart" VBox.vgrow="ALWAYS">
-                            <xAxis><NumberAxis label="Lần đặt" fx:id="xAxisChart" /></xAxis>
-                            <yAxis><NumberAxis fx:id="yAxisChart" label="Giá (trăm nghìn đồng)" /></yAxis>
-                        </LineChart>
-                    </VBox>
+<!--                    &lt;!&ndash; Bên phải: biểu đồ giá &ndash;&gt;-->
+<!--                    <VBox spacing="6" style="-fx-padding:12;">-->
+<!--                        <Label style="-fx-font-weight:bold;" text="📈 Biểu đồ giá theo thời gian" />-->
+<!--                        <LineChart fx:id="priceChart" VBox.vgrow="ALWAYS">-->
+<!--                            <xAxis><NumberAxis label="Lần đặt" fx:id="xAxisChart" /></xAxis>-->
+<!--                            <yAxis><NumberAxis fx:id="yAxisChart" label="Giá (VNĐ)" /></yAxis>-->
+<!--                        </LineChart>-->
+<!--                    </VBox>-->
 
                 </SplitPane>
             </Tab>

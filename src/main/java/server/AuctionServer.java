@@ -9,7 +9,6 @@ import java.net.Socket;
 
 // Server chính- chờ client kết nối + tạo thread xử lý từng client
 public class AuctionServer {
-
     public static void main(String[] args) throws IOException {
         UserService    userService    = new UserService();   //service qly user
         AuctionService auctionService = new AuctionService(userService);   //qly auction
@@ -37,6 +36,7 @@ public class AuctionServer {
         us.register(new Bidder("b2",     "charlie", "123456",    "charlie@gmail.com"));
 
         // Tạo phiên đấu giá mẫu (60 phút)
+
         as.createAuction("A001", "alice", "ELECTRONICS", "iPhone 15 Pro",
                 "Mới 100%, fullbox", 500.0, 60);
 
@@ -47,5 +47,6 @@ public class AuctionServer {
                 "Còn mới, đi 5000km", 8000.0, 120);
 
         System.out.println("Đã tạo data mẫu: 4 users, 3 phiên đấu giá");
+
     }
 }

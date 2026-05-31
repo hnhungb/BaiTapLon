@@ -65,9 +65,25 @@
     </VBox>
 
     <!-- PANEL ĐĂNG KÝ (ẩn mặc định) -->
-    <VBox fx:id="panelRegister" alignment="CENTER" managed="false" maxWidth="360" spacing="14" style="-fx-padding:40; -fx-max-width:360; -fx-background-color:white;                  -fx-background-radius:8; -fx-effect:dropshadow(gaussian,#ccc,10,0,0,2);" visible="false">
+    <VBox fx:id="panelRegister" alignment="CENTER" maxWidth="534.0" prefHeight="480.0" prefWidth="480.0" spacing="14" style="-fx-padding: 40; -fx-background-color: #F3FFE3; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian,#ccc,10,0,0,2);">
 
-        <Text style="-fx-font-size:18; -fx-font-weight:bold;" text="Hệ thống Đấu Giá" />
+        <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+                <ImageView fitHeight="60.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@logo.png" />
+                    </image>
+                    <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                    </cursor>
+                </ImageView>
+                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="357.0" text=" Hệ thống Đấu Giá Trực Tuyến" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
         <Text style="-fx-font-size:12; -fx-fill:#888;" text="Tạo tài khoản mới" />
 
         <Label style="-fx-font-weight:bold;" text="Tên đăng nhập:" />
