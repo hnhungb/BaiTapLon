@@ -99,14 +99,20 @@ public class AuctionTest {
         Auction auction = new Auction(item);
 
         List<Double> received = new ArrayList<>();
+        // Đăng ký observer để theo dõi các mức giá mới được đặt
         auction.addObserver(bid -> received.add(bid.getAmount()));
 
-        Bidder b = new Bidder("B1", "Alice");
-        auction.placeBid(new Bid(b, 150));
-        auction.placeBid(new Bid(b, 200));
+        Bidder alice = new Bidder("B1", "Alice");
+        Bidder bob   = new Bidder("B2", "Bob");
 
-        assertEquals(2, received.size());
-        assertEquals(200.0, received.get(1));
+        // Lần 1: Alice đặt 150 -> Observer nhận 150
+        auction.placeBid(new Bid(alice, 150));
+
+        // Lần 2: Bob đặt 200 -> Observer nhận 200 (Hợp lệ vì Bob không phải người dẫn đầu)
+        auction.placeBid(new Bid(bob, 200));
+
+        assertEquals(2, received.size(), "Observer phải nhận được 2 thông báo");
+        assertEquals(200.0, received.get(1), "Mức giá thứ hai phải là 200.0");
     }
 
     // Test auto-bid kích hoạt khi có bid từ đối thủ
@@ -115,8 +121,8 @@ public class AuctionTest {
         Item item = ItemFactory.createItem("ELECTRONICS", "I1", "Phone", "", 100);
         Auction auction = new Auction(item);
 
-        Bidder seller1 = new Bidder("B1", "seller1");
-        Bidder bidder1  = new Bidder("B2", "bidder1");
+        Bidder alice = new Bidder("B1", "Alice");
+        Bidder bob   = new Bidder("B2", "Bob");
 
         // Bob đăng ký auto-bid: tối đa 300, bước 20
         auction.registerAutoBid(new AutoBidConfig(bob, 300, 20));
@@ -178,3 +184,4 @@ public class AuctionTest {
         }
     }
 }
+

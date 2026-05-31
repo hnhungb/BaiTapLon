@@ -31,9 +31,9 @@ public class AuctionServer {
     private static void themDataMau(UserService us, AuctionService as) {
         // Tạo users mẫu
         us.register(new Admin("admin1",  "admin",   "admin123",  "admin@auction.com"));
-        us.register(new Seller("s01",     "seller1",   "123456",    "seller1@gmail.com"));
-        us.register(new Bidder("b01",     "bidder1",     "123456",    "bidder1@gmail.com"));
-        us.register(new Bidder("b02",     "bidder2", "123456",    "bidder2@gmail.com"));
+        us.register(new Seller("s1",     "alice",   "123456",    "alice@gmail.com"));
+        us.register(new Bidder("b1",     "bob",     "123456",    "bob@gmail.com"));
+        us.register(new Bidder("b2",     "charlie", "123456",    "charlie@gmail.com"));
 
         // Tạo phiên đấu giá mẫu (60 phút)
 
