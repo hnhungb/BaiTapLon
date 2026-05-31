@@ -115,8 +115,8 @@ public class AuctionTest {
         Item item = ItemFactory.createItem("ELECTRONICS", "I1", "Phone", "", 100);
         Auction auction = new Auction(item);
 
-        Bidder alice = new Bidder("B1", "Alice");
-        Bidder bob   = new Bidder("B2", "Bob");
+        Bidder seller1 = new Bidder("B1", "seller1");
+        Bidder bidder1  = new Bidder("B2", "bidder1");
 
         // Bob đăng ký auto-bid: tối đa 300, bước 20
         auction.registerAutoBid(new AutoBidConfig(bob, 300, 20));
