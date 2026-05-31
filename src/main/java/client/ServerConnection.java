@@ -7,7 +7,7 @@ import java.util.concurrent.*;
 
 public class ServerConnection {
 
-    private static final String HOST = "localhost";
+    private static final String HOST = System.getProperty("server.host", "localhost");
 
     private Socket socket;
     private BufferedReader reader;
