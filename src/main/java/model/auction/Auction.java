@@ -116,17 +116,17 @@ public class Auction {
             if (winningBid != null &&
                     bid.getBidder().getUsername().equals(winningBid.getBidder().getUsername())) {
                 throw new InvalidBidException("Bạn đang là người dẫn đầu");
-
-            // Kiểm tra giá hợp lệ 
+            }
+            // Kiểm tra giá hợp lệ
             if (bid.getAmount() <= currentPrice) {
                 throw new InvalidBidException(
-                    "Giá đặt (" + bid.getAmount() + ") phải lớn hơn giá hiện tại (" + currentPrice + ")"
+                        "Giá đặt (" + bid.getAmount() + ") phải lớn hơn giá hiện tại (" + currentPrice + ")"
                 );
             }
 
-            // Cập nhật: lưu bid
+                // Cập nhật: lưu bid
             currentPrice = bid.getAmount();
-            winningBid   = bid;
+            winningBid = bid;
             bids.add(bid);
 
             // Anti-snipe: gia hạn nếu đặt trong 30s cuối
@@ -140,7 +140,7 @@ public class Auction {
 
             return true;
 
-        } finally {
+        } finally{
             lock.unlock();
         }
     }

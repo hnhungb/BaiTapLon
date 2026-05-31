@@ -24,6 +24,7 @@ exception\InvalidBidException.class
 model\user\Admin.class
 model\user\User.class
 server\ClientHandler.class
+AuctionTest.class
 server\Protocol.class
 client\LoginController.class
 observer\BidObserver.class

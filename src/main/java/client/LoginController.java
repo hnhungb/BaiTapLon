@@ -120,7 +120,7 @@ public class LoginController {
 
     private void moManHinhChinh(String username, String role) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Main.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Main.fxml"));
             Parent root = loader.load();
 
             MainController ctrl = loader.getController();
