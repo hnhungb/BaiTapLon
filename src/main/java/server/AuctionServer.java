@@ -8,7 +8,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 // Server chính- chờ client kết nối + tạo thread xử lý từng client
-// Chạy: java -cp ... server.AuctionServer
 public class AuctionServer {
 
     public static void main(String[] args) throws IOException {
@@ -24,9 +23,8 @@ public class AuctionServer {
             Socket clientSocket = serverSocket.accept();     //chờ cho client kết nối
             System.out.println("Client kết nối: " + clientSocket.getRemoteSocketAddress());
 
-            // Mỗi client chạy trên 1 thread riêng
             ClientHandler handler = new ClientHandler(clientSocket, auctionService, userService);
-            Thread thread = new Thread(handler);
+            Thread thread = new Thread(handler);               // Mỗi client chạy trên 1 thread riêng
             thread.start();
         }
     }

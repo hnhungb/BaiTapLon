@@ -9,7 +9,6 @@ import model.user.*;
 import java.util.List;
 
 // Xử lý các nghiệp vụ đấu giá
-// Mở rộng từ code gốc: thêm createAuction với Seller, đặt auto-bid
 public class AuctionService {
 
     private UserService    userService;
@@ -39,7 +38,7 @@ public class AuctionService {
         return auction;
     }
 
-    // Lấy tất cả phiên (giữ nguyên từ gốc)
+    // Lấy tất cả phiên
     public List<Auction> getAllAuctions() {
         return AuctionManager.getInstance().getAuctions();
     }
@@ -47,7 +46,6 @@ public class AuctionService {
     public Auction getAuction(String id) {
         return AuctionManager.getInstance().getAuctionById(id);
     }
-
     // Đặt giá thủ công
     public boolean placeBid(String auctionId, String bidderUsername, double amount)
             throws InvalidBidException, AuctionClosedException {
@@ -60,7 +58,6 @@ public class AuctionService {
 
         return auction.placeBid(new Bid((Bidder) u, amount));
     }
-
     // Đăng ký auto-bid
     public void registerAutoBid(String auctionId, String bidderUsername,
                                 double maxBid, double step)
